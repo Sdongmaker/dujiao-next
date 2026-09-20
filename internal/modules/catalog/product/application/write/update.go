@@ -49,7 +49,11 @@ func (s *WriteService) Update(id string, input CreateProductInput) (*productdoma
 	product.DescriptionJSON = jsonmap.JSON(input.DescriptionJSON)
 	product.ContentJSON = jsonmap.JSON(input.ContentJSON)
 	product.InstructionsJSON = jsonmap.JSON(input.InstructionsJSON)
-	product.ManualFormSchemaJSON = jsonmap.JSON{}
+	// 映射商品的交付表单归上游所有：导入与同步会原样写入上游下发的 schema，
+	// 后台保存不得清空它，否则 tg_id 之类字段会在下一次同步前丢失，导致漏采表单。
+	if !product.IsMapped {
+		product.ManualFormSchemaJSON = jsonmap.JSON{}
+	}
 	product.PriceAmount = money.FromDecimal(priceAmount)
 	product.SortOrder = input.SortOrder
 	product.Images = jsonslice.Strings(input.Images)
