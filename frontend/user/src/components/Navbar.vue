@@ -218,6 +218,7 @@ import {
 } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { fallbackBrandName } from '@/utils/brand'
 
 const { t } = useI18n()
 const appStore = useAppStore()
@@ -252,7 +253,7 @@ const cartCount = computed(() => cartStore.totalItems)
 
 const brandSiteName = computed(() => {
   const text = String(appStore.config?.brand?.site_name || '').trim()
-  return text !== '' ? text : 'Dujiao-Next'
+  return text !== '' ? text : fallbackBrandName()
 })
 
 const brandLogo = computed(() => {

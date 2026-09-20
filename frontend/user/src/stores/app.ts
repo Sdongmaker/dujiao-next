@@ -17,7 +17,7 @@ export const useAppStore = defineStore('app', () => {
     const serverTimeOffset = ref(0)
     const siteIconHref = computed(() => {
         const siteIcon = String(config.value?.brand?.site_icon || '').trim()
-        return siteIcon ? getImageUrl(siteIcon) : '/dj.svg'
+        return siteIcon ? getImageUrl(siteIcon) : ''
     })
     const isResellerTenant = computed(() => {
         return String(config.value?.tenant?.mode || '').trim().toLowerCase() === 'reseller'
@@ -44,7 +44,7 @@ export const useAppStore = defineStore('app', () => {
             const siteName = String(config.value?.brand?.site_name || '').trim()
             return siteName || undefined
         },
-        link: () => [{ key: 'favicon', rel: 'icon', href: siteIconHref.value }],
+        link: () => (siteIconHref.value ? [{ key: 'favicon', rel: 'icon', href: siteIconHref.value }] : []),
         meta: () => {
             const seo = config.value?.seo
             if (!seo) return []

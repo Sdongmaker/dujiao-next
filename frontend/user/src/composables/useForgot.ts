@@ -7,6 +7,7 @@ import { useAppStore } from '../stores/app'
 import type { CaptchaPayload } from '../api'
 import ImageCaptcha from '../components/captcha/ImageCaptcha.vue'
 import TurnstileCaptcha from '../components/captcha/TurnstileCaptcha.vue'
+import { fallbackBrandName } from '../utils/brand'
 
 /**
  * 找回密码页共享逻辑（classic + vault 双模板共用）。
@@ -20,7 +21,7 @@ export function useForgot() {
 
   const brandSiteName = computed(() => {
     const siteName = String(appStore.config?.brand?.site_name || '').trim()
-    return siteName !== '' ? siteName : 'Dujiao-Next'
+    return siteName !== '' ? siteName : fallbackBrandName()
   })
 
   const emailVerificationEnabled = computed(() => appStore.config?.email_verification_enabled !== false)

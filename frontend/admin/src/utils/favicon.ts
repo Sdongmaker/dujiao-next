@@ -1,16 +1,20 @@
 import { getImageUrl } from './image'
 
 const SITE_ICON_LINK_ID = 'site-favicon'
-const DEFAULT_SITE_ICON = '/dj.svg'
 
 export function resolveSiteIconHref(value: unknown): string {
   const icon = String(value || '').trim()
-  return icon ? getImageUrl(icon) : DEFAULT_SITE_ICON
+  return icon ? getImageUrl(icon) : ''
 }
 
 export function applySiteIcon(value: unknown) {
   const link = document.getElementById(SITE_ICON_LINK_ID) as HTMLLinkElement | null
-  if (link) {
-    link.href = resolveSiteIconHref(value)
+  if (!link) return
+  const href = resolveSiteIconHref(value)
+  if (href) {
+    link.href = href
+    return
   }
+  // 未配置站点图标时不回退到任何内置图标
+  link.removeAttribute('href')
 }
